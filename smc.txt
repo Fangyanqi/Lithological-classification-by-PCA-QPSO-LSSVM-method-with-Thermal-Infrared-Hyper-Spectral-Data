@@ -1,0 +1,25 @@
+
+function x_msc=my_msc(x,x_sta)
+ 
+% This function can perform multivariate scattering correction on the data
+% x is the input data,x_sta is standard data,x_msc is output data
+% Auther:等等登登-Ande
+% Email:18356768364@163.com
+ 
+[m,n]=size(x);
+A=[ones(1,n)' x_sta'];
+%对A矩阵SVD分解
+[u s v]=svd(A);
+%SVD求解最小二乘问题
+A_plus=v*pinv(s)*u';
+C=A_plus*x';%C即为所要求解的系数矩阵
+%对原始光谱进行处理，减去偏移量与系数
+P=C(1,:)
+bais=P'*ones(1,n);
+x_msc1=x-bais;
+P=C(2,:);
+coeff=P'*ones(1,n);
+x_msc=x_msc1./coeff;
+————————————————
+版权声明：本文为CSDN博主「等等登登-Ande」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qq_35166974/article/details/95175803
